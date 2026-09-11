@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #080d1d;
+  --color-brand-card: rgba(13, 23, 43, 0.82);
+  --color-brand-primary: #a75cff;
+  --color-brand-secondary: #9b52ff;
+  --color-brand-accent: #e730b1;
+  --background-image-hero-glow: radial-gradient(circle at 8% 20%, rgba(117, 49, 255, .18), transparent 25%), radial-gradient(circle at 92% 80%, rgba(231, 48, 177, .13), transparent 27%);
+  --background-image-btn-gradient: linear-gradient(100deg, #873bff, #f23e99);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-bg);
+    color: #f1f5f9;
+    min-height: 100vh;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--background-image-hero-glow);
+    z-index: -10;
+  }
+}
