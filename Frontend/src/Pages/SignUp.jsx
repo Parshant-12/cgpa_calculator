@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import { useAuth } from "../../Context/authContext";
 import { Mail, LockKeyhole, User, Eye, EyeOff, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -18,9 +22,33 @@ export default function SignUp() {
       return;
     }
 
-    // Placeholder for backend auth logic
-    console.log("Signing up with:", form);
-    navigate("/");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to create your account.");
+      }
+
+      login(data.user, data.token);
+      toast.success("Account created successfully! Welcome!");
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Unable to create your account.");
+      toast.error("Failed to create account.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -113,8 +141,8 @@ export default function SignUp() {
               </label>
             </div>
 
-            <button type="submit" className="w-full flex items-center justify-center gap-2 h-12 mt-4 rounded-xl bg-btn-gradient shadow-[0_8px_20px_rgba(231,48,177,0.25)] text-sm font-bold text-white hover:brightness-110 transition-all">
-              Create Account <ArrowRight size={18} />
+            <button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center gap-2 h-12 mt-4 rounded-xl bg-btn-gradient shadow-[0_8px_20px_rgba(231,48,177,0.25)] text-sm font-bold text-white hover:brightness-110 disabled:opacity-70 disabled:cursor-wait transition-all">
+              {isSubmitting ? "Creating Account..." : "Create Account"} {!isSubmitting && <ArrowRight size={18} />}
             </button>
           </form>
 

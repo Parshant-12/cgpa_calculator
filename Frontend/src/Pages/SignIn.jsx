@@ -1,18 +1,39 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import toast from "react-hot-toast";
+import { useAuth } from "../../Context/authContext";
 import { Mail, LockKeyhole, Eye, EyeOff, ArrowRight, Github, GraduationCap } from "lucide-react";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
+  const { login } = useAuth();
+  const [error, setError] = useState("");
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    // Placeholder for backend auth logic
-    console.log("Signing in with:", form);
-    navigate("/"); // Redirect to dashboard on success
+    setError("");
+    
+    try {
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.error);
+      
+      login(data.user, data.token); // Save to context & localStorage
+      toast.success("Welcome back!");
+      navigate("/"); // Redirect to dashboard
+    } catch (err) {
+      setError(err.message);
+      toast.error("Failed to sign in.");
+    }
   };
 
   return (
@@ -69,21 +90,6 @@ export default function SignIn() {
               Sign In <ArrowRight size={18} />
             </button>
           </form>
-
-          <div className="mt-8 flex items-center gap-4 text-xs text-slate-500">
-            <div className="flex-1 h-px bg-slate-700/50"></div>
-            <span>Or continue with</span>
-            <div className="flex-1 h-px bg-slate-700/50"></div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            <button className="flex items-center justify-center gap-2 h-11 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:bg-slate-800 transition-colors text-sm text-slate-300 font-medium">
-              <span className="font-bold text-white text-base">G</span> Google
-            </button>
-            <button className="flex items-center justify-center gap-2 h-11 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:bg-slate-800 transition-colors text-sm text-slate-300 font-medium">
-              <Github size={18} /> GitHub
-            </button>
-          </div>
 
           <p className="text-center text-xs text-slate-400 mt-8">
             Don't have an account? <Link to="/signup" className="text-brand-primary font-semibold hover:text-brand-accent transition-colors">Sign up</Link>

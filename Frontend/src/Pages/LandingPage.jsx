@@ -111,7 +111,7 @@ export default function LandingPage() {
                 <p className="text-slate-400 text-sm leading-relaxed mb-6">
                   Want an 8.5 CGPA? Enter your current score, and we will tell you exactly what SGPA you need to maintain in your remaining semesters.
                 </p>
-                <Link to="/target-planner" className="text-brand-accent text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
+                <Link to="/TargetCGPA" className="text-brand-accent text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
                   Plan your target <ArrowRight size={16} />
                 </Link>
               </div>
