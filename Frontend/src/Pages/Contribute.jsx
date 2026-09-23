@@ -26,7 +26,7 @@ export default function Contribute() {
     }
 
     try {
-      const response = await fetch("/api/contributions", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/contributions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

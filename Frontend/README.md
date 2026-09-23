@@ -21,6 +21,18 @@ npm run dev
 
 Open the Vite URL, normally `http://localhost:5173`.
 
+## Environment Variables
+
+Copy `.env.example` to `.env` for local development:
+
+```env
+VITE_API_URL=http://localhost:5000
+VITE_FRONTEND_PORT=3000
+VITE_BACKEND_URL=http://localhost:5000
+```
+
+For Vercel, set `VITE_API_URL` to the public URL of the deployed backend. Do not put backend secrets in frontend environment variables because `VITE_` values are included in the browser bundle.
+
 ## Backend comments
 
 Backend integration comments are included throughout `src/App.jsx` and `src/api.js`.

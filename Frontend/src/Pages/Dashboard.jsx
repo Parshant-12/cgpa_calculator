@@ -95,7 +95,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchColleges = async () => {
       try {
-        const response = await fetch('/api/colleges');
+        const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/colleges`);
         if (response.ok) {
           const data = await response.json();
           // Keep manual entry as the first option, then append database colleges
@@ -194,7 +194,7 @@ export default function Dashboard() {
     // Auto-save the calculated results to user profile if authenticated
     if (isAuthenticated && token) {
       try {
-        const res = await fetch('/api/user/profile', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/user/profile`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

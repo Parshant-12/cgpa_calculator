@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import { HelpCircle, ChevronDown } from "lucide-react";
 
 const faqs = [
@@ -49,8 +50,8 @@ export default function FAQ() {
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
+              <MotionCard key={index} delay={index * 0.06} hover={false}>
               <div 
-                key={index} 
                 className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
                   isOpen 
                     ? "bg-[#0c142a]/90 border-brand-primary/50 shadow-[0_0_20px_rgba(167,92,255,0.15)]" 
@@ -82,6 +83,7 @@ export default function FAQ() {
                   </div>
                 </div>
               </div>
+              </MotionCard>
             );
           })}
         </section>

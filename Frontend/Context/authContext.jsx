@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
 
-      fetch('/api/auth/me', {
+      fetch(`${import.meta.env.VITE_API_URL || ''}/api/auth/me`, {
         headers: { Authorization: `Bearer ${savedToken}` },
       })
         .then(async (response) => {

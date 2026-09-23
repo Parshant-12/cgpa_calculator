@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../Context/authContext";
 import toast from "react-hot-toast";
+import MotionCard from "../Components/MotionCard";
 
 export default function AdminPanel() {
   const { token } = useAuth();
@@ -37,7 +38,7 @@ export default function AdminPanel() {
   const fetchColleges = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/colleges');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/colleges`);
       if (res.ok) {
         const data = await res.json();
         setColleges(data);
@@ -108,8 +109,8 @@ export default function AdminPanel() {
 
     try {
       const url = isEditing 
-        ? `http://localhost:5000/api/colleges/${editingCollegeId}/branches/${formData.branchId}`
-        : `http://localhost:5000/api/colleges`;
+        ? `${import.meta.env.VITE_API_URL || ''}/api/colleges/${editingCollegeId}/branches/${formData.branchId}`
+        : `${import.meta.env.VITE_API_URL || ''}/api/colleges`;
         
       const method = isEditing ? 'PUT' : 'POST';
 
@@ -146,7 +147,7 @@ export default function AdminPanel() {
     if (!window.confirm("Are you sure you want to delete this branch?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/colleges/${collegeId}/branches/${branchId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/colleges/${collegeId}/branches/${branchId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -181,6 +182,7 @@ export default function AdminPanel() {
         </section>
 
         {/* --- FORM SECTION --- */}
+        <MotionCard hover={false}>
         <form onSubmit={handleSubmit} className={`p-6 md:p-10 border border-emerald-900/30 rounded-3xl bg-[#091022]/90 shadow-2xl backdrop-blur-xl mb-12 transition-all ${isEditing ? 'ring-2 ring-emerald-500/50' : ''}`}>
           
           <div className="flex justify-between items-center mb-6">
@@ -263,6 +265,7 @@ export default function AdminPanel() {
             {status === "submitting" ? "Saving..." : <><Send size={16} /> {isEditing ? "Update Branch Data" : "Save to Database"}</>}
           </button>
         </form>
+        </MotionCard>
 
         {/* --- LIST SECTION --- */}
         <section>
@@ -281,8 +284,9 @@ export default function AdminPanel() {
             </div>
           ) : (
             <div className="flex flex-col gap-6">
-              {colleges.map((college) => (
-                <div key={college._id} className="bg-[#0c142a]/80 border border-slate-700/50 rounded-2xl overflow-hidden">
+              {colleges.map((college, collegeIndex) => (
+                <MotionCard key={college._id} delay={collegeIndex * 0.08}>
+                <div className="bg-[#0c142a]/80 border border-slate-700/50 rounded-2xl overflow-hidden">
                   
                   <div className="p-5 border-b border-slate-700/50 bg-slate-800/30">
                     <h3 className="text-lg font-bold text-white">{college.name}</h3>
@@ -293,8 +297,9 @@ export default function AdminPanel() {
                     {college.branches.length === 0 ? (
                       <p className="text-sm text-slate-500">No branches added yet.</p>
                     ) : (
-                      college.branches.map(branch => (
-                        <div key={branch._id} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-slate-700/40 bg-[#060b18]">
+                      college.branches.map((branch, branchIndex) => (
+                        <MotionCard key={branch._id} delay={branchIndex * 0.05}>
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-slate-700/40 bg-[#060b18]">
                           
                           <div className="flex-1">
                             <h4 className="text-emerald-400 font-semibold text-sm mb-1">{branch.name}</h4>
@@ -321,10 +326,12 @@ export default function AdminPanel() {
                           </div>
                           
                         </div>
+                        </MotionCard>
                       ))
                     )}
                   </div>
                 </div>
+                </MotionCard>
               ))}
             </div>
           )}

@@ -80,7 +80,7 @@ export default function TargetPredictor() {
 
     if (isAuthenticated && token) {
       try {
-        const res = await fetch('/api/user/profile', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/user/profile`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

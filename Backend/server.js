@@ -11,8 +11,18 @@ const reportRoutes = require('./Routes/reportRoutes');
 
 const app = express();
 
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' })); // Matches your Vite frontend port
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Origin is not allowed by CORS'));
+  }
+}));
 app.use(express.json());
 
 // Database Connection
@@ -28,5 +38,5 @@ app.use('/api/colleges', collegeRoutes);
 app.use('/api/reports', reportRoutes);
 
 // Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

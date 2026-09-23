@@ -73,7 +73,15 @@ Create a `.env` file in the root of the `Backend` directory and add your variabl
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/cgpa_calculator
 JWT_SECRET=your_super_secret_jwt_key
+CORS_ORIGINS=http://localhost:3000
 ```
+
+For deployment, set these variables in the backend host instead of committing the `.env` file:
+
+- `PORT`: supplied by the hosting provider when required
+- `MONGO_URI`: production MongoDB Atlas connection string
+- `JWT_SECRET`: long random production secret
+- `CORS_ORIGINS`: frontend URL, or multiple comma-separated frontend URLs
 
 Start the backend server:
 ```bash
@@ -93,6 +101,24 @@ npm install
 npm run dev
 ```
 The frontend should now be running on `http://localhost:3000` (or `5173` depending on your Vite config).
+
+### 4. Frontend Environment Variables
+
+Create `Frontend/.env` for local development from `Frontend/.env.example`:
+
+```env
+VITE_API_URL=http://localhost:5000
+VITE_FRONTEND_PORT=3000
+VITE_BACKEND_URL=http://localhost:5000
+```
+
+For Vercel, add these environment variables in the project settings:
+
+- `VITE_API_URL`: public deployed backend URL, for example `https://your-backend.example.com`
+- `VITE_FRONTEND_PORT`: only needed for local development
+- `VITE_BACKEND_URL`: only needed for the local Vite development proxy
+
+Only variables beginning with `VITE_` are exposed to browser code. Never place MongoDB credentials or `JWT_SECRET` in the frontend project.
 
 ---
 

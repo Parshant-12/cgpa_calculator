@@ -25,7 +25,7 @@ export default function ReportCollege() {
     }
 
     try {
-      const response = await fetch("/api/reports", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/reports`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
