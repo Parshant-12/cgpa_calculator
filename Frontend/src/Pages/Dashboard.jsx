@@ -294,7 +294,7 @@ export default function Dashboard() {
                     ))}
                   </select>
                   <div className="mt-2 text-right">
-                    <Link to="/report-college" className="text-[11px] text-slate-400 hover:text-brand-primary transition-colors inline-flex items-center gap-1">
+                    <Link to="/ReportCollege" className="text-[11px] text-slate-400 hover:text-brand-primary transition-colors inline-flex items-center gap-1">
                       Don't see your college? <span className="font-semibold underline decoration-brand-primary/40 underline-offset-2">Request to add it</span>
                     </Link>
                   </div>
