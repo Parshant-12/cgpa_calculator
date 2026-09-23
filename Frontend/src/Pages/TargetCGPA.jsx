@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import { Target, Sparkles, AlertCircle, CheckCircle2, Info, Calendar, X, LogIn } from "lucide-react";
 import { useAuth } from "../../Context/authContext";
 import toast from "react-hot-toast";
@@ -117,6 +118,7 @@ export default function TargetPredictor() {
           <p className="text-slate-400 text-sm">Find out the exact average SGPA you need in your upcoming semesters to hit your dream CGPA.</p>
         </section>
 
+        <MotionCard hover={false}>
         <form onSubmit={calculateTarget} className="p-6 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-2xl backdrop-blur-xl mb-8">
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -174,18 +176,22 @@ export default function TargetPredictor() {
             <Target size={18} /> Calculate Required SGPA
           </button>
         </form>
+        </MotionCard>
 
+        <MotionCard delay={0.08} hover={false}>
         <div className="flex items-start gap-3 p-4 mb-8 bg-slate-800/40 border border-slate-700/50 rounded-xl text-slate-400 text-xs leading-relaxed">
           <Info size={18} className="text-brand-primary flex-shrink-0 mt-0.5" />
           <p>
             <strong>Need help finding your total degree credits?</strong> Usually, a 4-year B.Tech program consists of ~160 credits. You can verify your specific course requirements by checking your university's official syllabus PDF or logging into your student portal.
           </p>
         </div>
+        </MotionCard>
 
         {/* Added ref here for smooth scrolling */}
         <div ref={resultRef}>
           {result && (
-            <div className="p-6 md:p-8 border border-brand-primary/30 rounded-2xl bg-[#0c142a]/90 backdrop-blur-md animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <MotionCard delay={0.12} hover={false}>
+            <div className="p-6 md:p-8 border border-brand-primary/30 rounded-2xl bg-[#0c142a]/90 backdrop-blur-md">
               {result.isAlreadyAchieved ? (
                 <div className="flex items-center gap-4 text-emerald-400">
                   <CheckCircle2 size={32} />
@@ -219,6 +225,7 @@ export default function TargetPredictor() {
                 </div>
               )}
             </div>
+            </MotionCard>
           )}
         </div>
       </main>

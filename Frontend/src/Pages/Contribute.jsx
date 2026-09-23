@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import { Send, Building, FileText, Link as LinkIcon, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function Contribute() {
@@ -62,7 +63,8 @@ export default function Contribute() {
         </section>
 
         {status === "success" ? (
-          <div className="p-10 border border-emerald-500/30 rounded-3xl bg-emerald-950/20 shadow-2xl backdrop-blur-xl text-center animate-in zoom-in-95 duration-300">
+          <MotionCard hover={false}>
+          <div className="p-10 border border-emerald-500/30 rounded-3xl bg-emerald-950/20 shadow-2xl backdrop-blur-xl text-center">
             <CheckCircle2 size={64} className="text-emerald-400 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">Thank You!</h2>
             <p className="text-slate-400 text-sm mb-6">
@@ -75,7 +77,9 @@ export default function Contribute() {
               Submit Another
             </button>
           </div>
+          </MotionCard>
         ) : (
+          <MotionCard hover={false}>
           <form onSubmit={handleSubmit} className="p-6 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-2xl backdrop-blur-xl">
             <div className="space-y-6">
               
@@ -148,6 +152,7 @@ export default function Contribute() {
               )}
             </button>
           </form>
+          </MotionCard>
         )}
       </main>
     </div>

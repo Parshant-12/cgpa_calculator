@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import { useAuth } from "../../Context/authContext";
 import { Mail, LockKeyhole, User, Eye, EyeOff, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
@@ -56,7 +57,8 @@ export default function SignUp() {
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center p-4 mt-8">
-        <div className="w-full max-w-[650px] p-8 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl relative z-10">
+        <MotionCard className="w-full max-w-[650px] relative z-10" hover={false}>
+        <div className="w-full p-8 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl">
           
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">
@@ -151,6 +153,7 @@ export default function SignUp() {
           </p>
 
         </div>
+        </MotionCard>
       </main>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import { ArrowRight, Calculator, Target, TrendingUp, Sparkles, ShieldCheck, Zap, Star, BookOpen, Award, Brain, Library } from "lucide-react";
 
 export default function LandingPage() {
@@ -89,7 +90,8 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Feature 1 */}
-              <div className="p-8 rounded-3xl border border-slate-700/40 bg-[#0c142a]/80 backdrop-blur-sm hover:border-brand-primary/50 hover:shadow-[0_0_30px_rgba(167,92,255,0.1)] transition-all group">
+              <MotionCard delay={0} className="h-full">
+                <div className="h-full p-8 rounded-3xl border border-slate-700/40 bg-[#0c142a]/80 backdrop-blur-sm hover:border-brand-primary/50 hover:shadow-[0_0_30px_rgba(167,92,255,0.1)] transition-all group">
                 <div className="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Calculator size={28} className="text-brand-primary" />
                 </div>
@@ -100,10 +102,12 @@ export default function LandingPage() {
                 <Link to="/calculator" className="text-brand-primary text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
                   Try it out <ArrowRight size={16} />
                 </Link>
-              </div>
+                </div>
+              </MotionCard>
 
               {/* Feature 2 */}
-              <div className="p-8 rounded-3xl border border-slate-700/40 bg-[#0c142a]/80 backdrop-blur-sm hover:border-brand-accent/50 hover:shadow-[0_0_30px_rgba(231,48,177,0.1)] transition-all group">
+              <MotionCard delay={0.1} className="h-full">
+                <div className="h-full p-8 rounded-3xl border border-slate-700/40 bg-[#0c142a]/80 backdrop-blur-sm hover:border-brand-accent/50 hover:shadow-[0_0_30px_rgba(231,48,177,0.1)] transition-all group">
                 <div className="w-14 h-14 rounded-2xl bg-brand-accent/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Target size={28} className="text-brand-accent" />
                 </div>
@@ -114,10 +118,12 @@ export default function LandingPage() {
                 <Link to="/TargetCGPA" className="text-brand-accent text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
                   Plan your target <ArrowRight size={16} />
                 </Link>
-              </div>
+                </div>
+              </MotionCard>
 
               {/* Feature 3 */}
-              <div className="p-8 rounded-3xl border border-slate-700/40 bg-[#0c142a]/80 backdrop-blur-sm hover:border-blue-400/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all group">
+              <MotionCard delay={0.2} className="h-full">
+                <div className="h-full p-8 rounded-3xl border border-slate-700/40 bg-[#0c142a]/80 backdrop-blur-sm hover:border-blue-400/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all group">
                 <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <TrendingUp size={28} className="text-blue-400" />
                 </div>
@@ -128,7 +134,8 @@ export default function LandingPage() {
                 <Link to="/percentage-converter" className="text-blue-400 text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
                   Convert now <ArrowRight size={16} />
                 </Link>
-              </div>
+                </div>
+              </MotionCard>
             </div>
           </div>
         </section>

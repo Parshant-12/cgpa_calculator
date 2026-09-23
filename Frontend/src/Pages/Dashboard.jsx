@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import {
   Calculator, Plus, Trophy, X, Info, Target, TrendingUp,
   HelpCircle, BookOpen, Award, Brain, Library, ArrowUpRight, ChevronDown, Lock, LogIn, Sparkles
@@ -23,6 +24,7 @@ function SemesterCard({ semester, index, onChange, onRemove, formula, isLocked }
   const isAverage = formula === "average";
 
   return (
+    <MotionCard className="h-fit">
     <div className="p-5 border border-slate-700/50 rounded-xl bg-[#0c142a]/80 hover:border-brand-primary/40 transition-colors shadow-sm relative h-fit">
       <div className="flex justify-between items-center mb-5">
         <h3 className="text-brand-primary font-medium text-sm">Semester {index + 1}</h3>
@@ -63,6 +65,7 @@ function SemesterCard({ semester, index, onChange, onRemove, formula, isLocked }
         </div>
       )}
     </div>
+    </MotionCard>
   );
 }
 
@@ -261,7 +264,8 @@ export default function Dashboard() {
         </section>
 
         {}
-        <section className="w-full max-w-[1200px] mx-auto p-6 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl relative z-10">
+        <MotionCard className="w-full max-w-[1200px] mx-auto relative z-10" hover={false}>
+        <section className="w-full p-6 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl">
 
           {/* ======================================= */}
           {/* TOP CONTROLS: COLLEGE, BRANCH, FORMULA  */}
@@ -393,6 +397,7 @@ export default function Dashboard() {
             </div>
           )}
         </section>
+        </MotionCard>
 
         {}
         {/* Feature & Navigation Links */}

@@ -14,6 +14,7 @@ import ReportCollege from "./Pages/ReportCollege";
 import AdminPanel from "./Pages/AdminPanel";
 import AdminRoute from "./Components/adminRoute";
 import { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <div className="flex flex-col min-h-screen">

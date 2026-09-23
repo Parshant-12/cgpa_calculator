@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../Components/Navbar";
+import MotionCard from "../Components/MotionCard";
 import { ArrowRightLeft, ChevronDown } from "lucide-react";
 
 export default function PercentageConverter() {
@@ -48,6 +49,7 @@ export default function PercentageConverter() {
           </p>
         </section>
 
+        <MotionCard hover={false}>
         <div className="p-6 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-2xl backdrop-blur-xl">
           <div className="flex justify-between items-end mb-8">
             <div className="w-64">
@@ -118,6 +120,7 @@ export default function PercentageConverter() {
             Formula applied: {mode === "cgpaToPercent" ? `Percentage = CGPA × ${multiplier}` : `CGPA = Percentage ÷ ${multiplier}`}
           </div>
         </div>
+        </MotionCard>
       </main>
     </div>
   );
