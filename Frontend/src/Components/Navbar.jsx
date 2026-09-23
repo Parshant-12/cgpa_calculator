@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home as HomeIcon, Menu, X, Calculator, Target, TrendingUp, HelpCircle, User, LogOut, ChevronDown, ShieldCheck } from "lucide-react";
 import scholar from "../Images/scholar.png";
-import { useAuth } from "../../Context/AuthContext"; // Adjust path if your context is named differently
+import { useAuth } from "../../Context/authContext";
 import toast from "react-hot-toast";
 
 export function Logo({ onClick }) {
