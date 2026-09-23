@@ -11,7 +11,7 @@ export function Logo({ onClick }) {
       <span className="w-12 h-10 grid place-items-center text-brand-secondary">
         <img src={scholar} alt="scholar" width={40} height={40} />
       </span>
-      <span><b className="text-brand-primary">CGPA</b> </span>
+      <span className="brand-wordmark">CGPA Hub</span>
     </Link>
   );
 }

@@ -19,7 +19,7 @@ export default function Footer() {
               <span className="w-10 h-10 grid place-items-center text-brand-secondary">
                 <img src={scholar} alt="scholar" width={36} height={36} />
               </span>
-              <span className="text-white"><b className="text-brand-primary">CGPA</b> Calc</span>
+              <span className="brand-wordmark">CGPA Hub</span>
             </Link>
             <p className="text-slate-400 text-sm max-w-xs">
               The ultimate tool for college students to plan, calculate, and achieve their academic goals.
@@ -62,7 +62,7 @@ export default function Footer() {
         <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
           
           <div className="text-slate-500 text-xs text-center md:text-left">
-            <p className="mb-1">© {new Date().getFullYear()} CGPA Calc. All rights reserved.</p>
+            <p className="mb-1">© {new Date().getFullYear()} CGPA Hub. All rights reserved.</p>
             <p>
               Developed with 💜 by <span className="text-slate-300 font-semibold">Parshant Kumar</span> & <span className="text-slate-300 font-semibold">Manav Sehgal</span>
             </p>

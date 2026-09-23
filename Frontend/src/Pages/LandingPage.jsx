@@ -186,7 +186,7 @@ export default function LandingPage() {
 
       {/* Simple Footer */}
       <footer className="border-t border-slate-800/60 bg-[#060b18] py-8 text-center text-slate-500 text-xs">
-        <p>© {new Date().getFullYear()} CGPA Calc. Made for college students.</p>
+        <p>© {new Date().getFullYear()} CGPA Hub. Made for college students.</p>
       </footer>
     </div>
   );

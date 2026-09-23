@@ -10,6 +10,15 @@
   --background-image-btn-gradient: linear-gradient(100deg, #873bff, #f23e99);
 }
 
+.brand-wordmark {
+  background: linear-gradient(110deg, #c084fc 0%, #a855f7 42%, #fb7185 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.24));
+  letter-spacing: 0.01em;
+}
+
 @layer base {
   body {
     background-color: var(--color-brand-bg);
