@@ -70,7 +70,7 @@ export default function Footer() {
 
           <button
             onClick={scrollToTop}
-            className="group flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-700/50 rounded-full text-xs text-slate-400 hover:text-brand-primary hover:border-brand-primary/50 transition-all shadow-lg"
+            className="group flex cursor-pointer items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-700/50 rounded-full text-xs text-slate-400 hover:text-brand-primary hover:border-brand-primary/50 transition-all shadow-lg"
           >
             Go to top
             <span className="p-1 rounded-full bg-slate-800 group-hover:bg-brand-primary/20 transition-colors">

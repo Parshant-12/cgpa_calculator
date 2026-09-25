@@ -73,7 +73,7 @@ export default function PercentageConverter() {
 
             <button
               onClick={toggleMode}
-              className="flex items-center gap-2 text-xs font-semibold text-brand-primary hover:text-brand-accent transition-colors bg-brand-primary/10 border border-brand-primary/30 px-4 py-2.5 rounded-lg h-10"
+              className="flex items-center cursor-pointer gap-2 text-xs font-semibold text-brand-primary hover:text-brand-accent transition-colors bg-brand-primary/10 border border-brand-primary/30 px-4 py-2.5 rounded-lg h-10"
             >
               <ArrowRightLeft size={14} /> Switch Direction
             </button>

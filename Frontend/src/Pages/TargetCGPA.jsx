@@ -172,7 +172,7 @@ export default function TargetPredictor() {
 
           {error && <div className="text-pink-400 bg-pink-950/30 border border-pink-800/40 p-3 rounded-lg text-xs mb-6">{error}</div>}
 
-          <button type="submit" className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-btn-gradient shadow-[0_8px_20px_rgba(231,48,177,0.25)] text-sm font-bold text-white hover:brightness-110 transition-all">
+          <button type="submit" className="w-full cursor-pointer flex items-center justify-center gap-2 py-3.5 rounded-xl bg-btn-gradient shadow-[0_8px_20px_rgba(231,48,177,0.25)] text-sm font-bold text-white hover:brightness-110 transition-all">
             <Target size={18} /> Calculate Required SGPA
           </button>
         </form>

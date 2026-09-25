@@ -3,15 +3,18 @@ import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import MotionCard from "../Components/MotionCard";
 import { ArrowRight, Calculator, Target, TrendingUp, Sparkles, ShieldCheck, Zap, Star, BookOpen, Award, Brain, Library } from "lucide-react";
+import { useAuth } from "../../Context/authContext"; // <-- Import useAuth
 
 export default function LandingPage() {
+  const { isAuthenticated } = useAuth(); // <-- Get authentication status
+
   return (
-    
     <div className="relative z-10 min-h-screen overflow-hidden flex flex-col">
         
       {/* Background Glowing Blobs for Landing Page */}
       <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-primary/20 rounded-full blur-[120px] pointer-events-none z-[-1]"></div>
       <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] pointer-events-none z-[-1]"></div>
+      
       {/* Custom Keyframes for Floating Animation */}
       <style>{`
         @keyframes float {
@@ -53,11 +56,15 @@ export default function LandingPage() {
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/calculator" className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-btn-gradient shadow-[0_8px_25px_rgba(167,92,255,0.25)] text-sm font-bold text-white hover:brightness-110 transition-all hover:-translate-y-1">
-                Start Calculating Now <ArrowRight size={18} />
+                {isAuthenticated ? "Go to Calculator" : "Start Calculating Now"} <ArrowRight size={18} />
               </Link>
-              <Link to="/signup" className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-slate-600 bg-slate-800/40 text-sm font-bold text-white hover:bg-slate-800 transition-all hover:-translate-y-1">
-                Create Free Account
-              </Link>
+              
+              {/* Only show "Create Free Account" if user is NOT authenticated */}
+              {!isAuthenticated && (
+                <Link to="/signup" className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-slate-600 bg-slate-800/40 text-sm font-bold text-white hover:bg-slate-800 transition-all hover:-translate-y-1">
+                  Create Free Account
+                </Link>
+              )}
             </div>
 
             {/* Social Proof */}
@@ -162,11 +169,16 @@ export default function LandingPage() {
                     </div>
                   </li>
                 </ul>
-                <div className="mt-8">
-                  <Link to="/signup" className="text-brand-primary font-bold hover:text-brand-accent transition-colors flex items-center gap-2">
-                    Join for free <ArrowRight size={16} />
-                  </Link>
-                </div>
+                
+                {/* Only show "Join for free" link if user is NOT authenticated */}
+                {!isAuthenticated && (
+                  <div className="mt-8">
+                    <Link to="/signup" className="text-brand-primary font-bold hover:text-brand-accent transition-colors flex items-center gap-2">
+                      Join for free <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                )}
+                
               </div>
               <div className="relative">
                 {/* Abstract graphic representing data saving */}

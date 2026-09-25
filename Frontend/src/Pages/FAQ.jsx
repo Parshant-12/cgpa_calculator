@@ -60,7 +60,7 @@ export default function FAQ() {
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                  className="w-full flex items-center justify-between px-6 py-4 text-left outline-none"
+                  className="w-full flex items-center justify-between px-6 py-4 text-left cursor-pointer outline-none"
                 >
                   <span className={`font-semibold text-sm md:text-base ${isOpen ? "text-brand-primary" : "text-slate-200"}`}>
                     {faq.question}

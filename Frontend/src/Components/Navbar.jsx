@@ -68,7 +68,7 @@ export default function Navbar() {
             <div className="relative">
               <button 
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/40 border border-slate-700/50 text-slate-200 hover:bg-slate-800 transition-colors focus:outline-none"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer bg-slate-800/40 border border-slate-700/50 text-slate-200 hover:bg-slate-800 transition-colors focus:outline-none"
               >
                 <div className="w-7 h-7 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary">
                   <User size={16} />
@@ -93,7 +93,7 @@ export default function Navbar() {
                   
                   <button 
                     onClick={handleLogout}
-                    className="px-4 py-2.5 text-sm text-pink-400 hover:bg-pink-950/30 flex items-center gap-3 text-left w-full transition-colors"
+                    className="px-4 py-2.5 text-sm text-pink-400 cursor-pointer hover:bg-pink-950/30 flex items-center gap-3 text-left w-full transition-colors"
                   >
                     <LogOut size={16} /> Logout
                   </button>
@@ -114,7 +114,7 @@ export default function Navbar() {
 
         {/* MOBILE MENU TOGGLE */}
         <button 
-          className="md:hidden p-2 text-slate-300 hover:text-brand-primary transition-colors focus:outline-none"
+          className="md:hidden p-2 text-slate-300 hover:text-brand-primary cursor-pointer transition-colors focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
