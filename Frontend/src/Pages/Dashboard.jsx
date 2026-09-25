@@ -27,7 +27,7 @@ function SemesterCard({ semester, index, onChange, onRemove, formula, isLocked }
       <div className="p-5 border border-slate-700/50 rounded-xl bg-[#0c142a]/80 hover:border-brand-primary/40 transition-colors shadow-sm relative h-fit">
         <div className="flex justify-between items-center mb-5">
           <h3 className="text-brand-primary font-medium text-sm">Semester {index + 1}</h3>
-          <button onClick={() => onRemove(semester.id)} disabled={index < 2} className="text-pink-500 hover:text-pink-400 disabled:opacity-20 disabled:cursor-not-allowed transition-opacity">
+          <button onClick={() => onRemove(semester.id)} disabled={index < 2} className="text-pink-500 cursor-pointer hover:text-pink-400 disabled:opacity-20 disabled:cursor-not-allowed transition-opacity">
             <X size={16} />
           </button>
         </div>
