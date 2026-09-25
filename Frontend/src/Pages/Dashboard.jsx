@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import MotionCard from "../Components/MotionCard";
@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../Context/authContext";
 import toast from "react-hot-toast";
-import { useRef } from "react";
 
 const formulaOptions = [
   { id: "weighted", label: "Weighted by Credits", expression: "Σ(Grade Point × Credit Hours) / Total Credit Hours" },
@@ -40,7 +39,6 @@ function SemesterCard({ semester, index, onChange, onRemove, formula, isLocked }
           className={`w-full h-10 px-3 bg-[#060b18] border border-slate-700/50 rounded-lg text-slate-200 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/50 outline-none transition-all ${!isAverage ? 'mb-4' : ''}`}
         />
 
-        {/* Hide credits input dynamically if simple average is selected */}
         {!isAverage && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center justify-between mb-1.5">
@@ -78,27 +76,28 @@ export default function Dashboard() {
     { collegeId: "manual", name: "Manual Entry (Custom)", branches: [] }
   ]);
 
-  // Selection states
+  // Selection states (Initialize with Fallbacks)
   const [college, setCollege] = useState("manual");
   const [branch, setBranch] = useState("");
-  const [semesters, setSemesters] = useState(initialSemesters);
   const [formula, setFormula] = useState("weighted");
+  const [semesters, setSemesters] = useState(initialSemesters);
 
-  // UI states
   const [result, setResult] = useState(null);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  
+  // Track if we have completed the initial load from DB
+  const [hasLoadedProfile, setHasLoadedProfile] = useState(false);
 
   // Check if fields should be locked based on selection
   const isLocked = college !== "manual" && branch !== "";
 
-  // Fetch colleges from the database on mount
+  // 1. Fetch colleges from the database on mount
   useEffect(() => {
     const fetchColleges = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/colleges`);
         if (response.ok) {
           const data = await response.json();
-          // Keep manual entry as the first option, then append database colleges
           setCollegesList([
             { collegeId: "manual", name: "Manual Entry (Custom)", branches: [] },
             ...data
@@ -108,25 +107,49 @@ export default function Dashboard() {
         }
       } catch (err) {
         console.error("Failed to fetch colleges:", err);
-        toast.error("Server connection error while loading colleges");
       }
     };
     fetchColleges();
   }, []);
 
-  // Trigger the popup 1.5 seconds after load if the user is NOT logged in
+  // 2. Load User Profile Data OR Local Storage Data
+  useEffect(() => {
+    if (isAuthenticated && user?.academicProfile) {
+      // Prioritize Database Data
+      setCollege(user.academicProfile.selectedCollege || "manual");
+      setBranch(user.academicProfile.selectedBranch || "");
+      setFormula(user.academicProfile.formula || "weighted");
+      
+      if (user.academicProfile.semesterData && user.academicProfile.semesterData.length > 0) {
+        setSemesters(user.academicProfile.semesterData);
+      }
+    } else if (!isAuthenticated) {
+      // Fallback to Local Storage for guests
+      setCollege(localStorage.getItem("cgpaCollege") || "manual");
+      setBranch(localStorage.getItem("cgpaBranch") || "");
+      setFormula(localStorage.getItem("cgpaFormula") || "weighted");
+      
+      try {
+        const saved = localStorage.getItem("cgpaSemesters");
+        if (saved) setSemesters(JSON.parse(saved));
+      } catch (e) {
+        // Ignore parse error
+      }
+    }
+    setHasLoadedProfile(true);
+  }, [isAuthenticated, user]);
+
+  // Trigger auth prompt for guests
   useEffect(() => {
     if (!isAuthenticated) {
-      const timer = setTimeout(() => {
-        setShowAuthPrompt(true);
-      }, 1500);
+      const timer = setTimeout(() => setShowAuthPrompt(true), 1500);
       return () => clearTimeout(timer);
     }
   }, [isAuthenticated]);
 
-  // Auto-fill credits when college/branch changes
+  // Auto-fill credits when college/branch changes (Only after initial load is complete)
   useEffect(() => {
-    if (isLocked) {
+    if (hasLoadedProfile && isLocked) {
       const selectedCollegeData = collegesList.find(c => c.collegeId === college);
       if (selectedCollegeData) {
         const branchData = selectedCollegeData.branches.find(b => b.branchId === branch);
@@ -134,12 +157,22 @@ export default function Dashboard() {
           setFormula(branchData.formula);
           setSemesters(current => current.map((sem, idx) => ({
             ...sem,
-            credits: branchData.credits[idx] || "" // Auto-fill based on index
+            credits: branchData.credits[idx] || "" 
           })));
         }
       }
     }
-  }, [college, branch, isLocked, collegesList]);
+  }, [college, branch, isLocked, collegesList, hasLoadedProfile]);
+
+  // Constantly mirror state to local storage as a backup for guests
+  useEffect(() => {
+    if (hasLoadedProfile) {
+      localStorage.setItem("cgpaCollege", college);
+      localStorage.setItem("cgpaBranch", branch);
+      localStorage.setItem("cgpaFormula", formula);
+      localStorage.setItem("cgpaSemesters", JSON.stringify(semesters));
+    }
+  }, [college, branch, formula, semesters, hasLoadedProfile]);
 
   const updateSemester = (id, field, value) => setSemesters(current => current.map(s => s.id === id ? { ...s, [field]: value } : s));
 
@@ -147,7 +180,6 @@ export default function Dashboard() {
     const newIndex = semesters.length;
     let autoCredit = "";
 
-    // Auto-fill the new semester if a branch is selected
     if (isLocked) {
       const selectedCollegeData = collegesList.find(c => c.collegeId === college);
       if (selectedCollegeData) {
@@ -191,7 +223,7 @@ export default function Dashboard() {
 
     toast.success("CGPA Calculated successfully!");
 
-    // Auto-save the calculated results to user profile if authenticated
+    // Save ALL UI state to database
     if (isAuthenticated && token) {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/user/profile`, {
@@ -203,24 +235,25 @@ export default function Dashboard() {
           body: JSON.stringify({
             currentCgpa: finalCgpa.toFixed(2),
             completedCredits: totalCredits.toString(),
-            // Keep the previous totalDegreeCredits and remainingSemesters intact
             totalDegreeCredits: user?.academicProfile?.totalDegreeCredits || "160",
-            remainingSemesters: user?.academicProfile?.remainingSemesters || ""
+            // Include active calculator setup
+            selectedCollege: college,
+            selectedBranch: branch,
+            formula: formula,
+            semesterData: semesters
           })
         });
         const data = await res.json();
         if (res.ok) {
           updateLocalProfile(data.academicProfile);
-          toast.success("Progress auto-saved to profile!");
+          toast.success("Progress saved to your account!");
         }
       } catch (err) {
-        console.error("Failed to auto-save profile from Dashboard:", err);
-        toast.error("Failed to auto-save progress.");
+        console.error("Failed to auto-save profile:", err);
       }
     }
   };
 
-  // Scroll to result smoothly when result state updates
   useEffect(() => {
     if (result) {
       setTimeout(() => {
@@ -263,13 +296,9 @@ export default function Dashboard() {
           </p>
         </section>
 
-        { }
         <MotionCard className="w-full max-w-[1200px] mx-auto relative z-10" hover={false}>
           <section className="w-full p-6 md:p-10 border border-slate-700/40 rounded-3xl bg-[#091022]/90 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl">
 
-            {/* ======================================= */}
-            {/* TOP CONTROLS: COLLEGE, BRANCH, FORMULA  */}
-            {/* ======================================= */}
             <div className="flex flex-col gap-6 mb-10 border-b border-slate-700/40 pb-8">
               <div className="flex gap-4 items-center mb-2">
                 <span className="w-10 h-10 rounded-lg bg-brand-primary/10 border border-brand-primary/30 grid place-items-center text-brand-primary"><Calculator size={20} /></span>
@@ -280,7 +309,6 @@ export default function Dashboard() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* Select College */}
                 <div className="flex flex-col gap-1.5 w-full">
                   <label className="text-xs font-medium text-slate-300">University / College</label>
                   <div className="relative">
@@ -306,7 +334,6 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                {/* Select Branch (Only visible if college is not manual) */}
                 {college !== "manual" && (
                   <div className="flex flex-col gap-1.5 w-full animate-in fade-in duration-300">
                     <label className="text-xs font-medium text-slate-300">Branch / Stream</label>
@@ -329,7 +356,6 @@ export default function Dashboard() {
                   </div>
                 )}
 
-                {/* CGPA Formula (Disabled if College auto-sets it) */}
                 <div className="flex flex-col gap-1.5 w-full">
                   <label className="text-xs font-medium text-slate-300 flex items-center gap-1">
                     CGPA Formula {isLocked && <Lock size={10} className="text-brand-accent" />}
@@ -349,10 +375,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            { }
-            {/* ======================================= */}
-            {/* SEMESTER GRID                             */}
-            {/* ======================================= */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-10 items-start">
               {semesters.map((sem, idx) => (
                 <SemesterCard
@@ -399,8 +421,6 @@ export default function Dashboard() {
           </section>
         </MotionCard>
 
-        { }
-        {/* Feature & Navigation Links */}
         <section className="max-w-[1100px] mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
           <Link to="/TargetCGPA" className="relative flex gap-4 items-start p-4 rounded-xl bg-slate-800/20 border border-slate-700/30 hover:border-brand-accent/50 hover:bg-slate-800/40 transition-all cursor-pointer group">
             <ArrowUpRight className="absolute top-4 right-4 w-4 h-4 text-slate-600 group-hover:text-brand-accent transition-colors" />
@@ -431,19 +451,12 @@ export default function Dashboard() {
         </section>
       </main>
 
-      { }
-      {/* Floating Auth Prompt for Unauthenticated Users */}
       {showAuthPrompt && !isAuthenticated && (
         <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 animate-in slide-in-from-bottom-8 fade-in duration-500">
           <div className="w-[320px] p-5 border border-brand-primary/40 rounded-2xl bg-[#091022]/95 shadow-[0_15px_40px_rgba(0,0,0,0.6)] backdrop-blur-xl relative group">
-
-            <button
-              onClick={() => setShowAuthPrompt(false)}
-              className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors"
-            >
+            <button onClick={() => setShowAuthPrompt(false)} className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors">
               <X size={16} />
             </button>
-
             <div className="flex items-start gap-4 mb-4">
               <div className="w-10 h-10 rounded-full bg-brand-primary/20 border border-brand-primary/30 flex items-center justify-center flex-shrink-0 mt-1">
                 <Sparkles size={18} className="text-brand-primary" />
@@ -455,22 +468,14 @@ export default function Dashboard() {
                 </p>
               </div>
             </div>
-
             <div className="flex gap-3">
-              <Link
-                to="/signin"
-                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-brand-primary text-white text-xs font-bold hover:bg-brand-primary/90 transition-colors"
-              >
+              <Link to="/signin" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-brand-primary text-white text-xs font-bold hover:bg-brand-primary/90 transition-colors">
                 <LogIn size={14} /> Sign In
               </Link>
-              <Link
-                to="/signup"
-                className="flex-1 flex items-center justify-center py-2.5 rounded-lg border border-slate-600 bg-slate-800/50 text-white text-xs font-bold hover:bg-slate-800 transition-colors"
-              >
+              <Link to="/signup" className="flex-1 flex items-center justify-center py-2.5 rounded-lg border border-slate-600 bg-slate-800/50 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
                 Create Account
               </Link>
             </div>
-
           </div>
         </div>
       )}

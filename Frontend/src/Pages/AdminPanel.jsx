@@ -199,7 +199,7 @@ export default function AdminPanel() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8 p-5 bg-slate-800/30 border border-slate-700/50 rounded-xl">
             <div>
-              <label className="block text-xs text-slate-400 mb-1.5 font-medium">College ID (e.g. cec_landran)</label>
+              <label className="block text-xs text-slate-400 mb-1.5 font-medium">College ID (e.g. cgc_landran)</label>
               <input type="text" required disabled={isEditing} placeholder="Unique ID, no spaces"
                 value={formData.collegeId} onChange={(e) => setFormData({ ...formData, collegeId: e.target.value.toLowerCase().replace(/\s+/g, '_') })}
                 className="w-full h-11 px-3 bg-[#060b18] border border-slate-700/50 rounded-lg text-slate-200 text-sm focus:border-emerald-400 outline-none disabled:opacity-50"
