@@ -1,6 +1,6 @@
 <div align="center">
   
-  # 🎓 CGPA Calc
+  # 🎓 CGPA Hub
   **The ultimate academic tool for GenZ students to calculate, plan, and conquer their CGPA.**
 
   [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -14,7 +14,7 @@
 
 ## 🌟 Overview
 
-**CGPA Calc** is a sleek, dark-themed web application designed to help college students easily track and plan their academic progress. Built with a modern GenZ aesthetic (glassmorphism, glowing gradients, and smooth animations), it replaces confusing spreadsheets with an intuitive, user-friendly dashboard. 
+**CGPA Hub** is a sleek, dark-themed web application designed to help college students easily track and plan their academic progress. Built with a modern GenZ aesthetic (glassmorphism, glowing gradients, and smooth animations), it replaces confusing spreadsheets with an intuitive, user-friendly dashboard. 
 
 Whether you need to quickly find your semester GPA, plan exactly what grades you need to hit your dream CGPA, or convert your score for a resume, CGPA Calc has you covered.
 
